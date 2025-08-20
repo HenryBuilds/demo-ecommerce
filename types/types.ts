@@ -32,3 +32,9 @@ export interface UserGuardProps {
   fallback?: ReactNode;
   redirectTo?: string;
 }
+
+export interface JWTPayload {
+  userId: string
+  email: string
+  role: string
+}

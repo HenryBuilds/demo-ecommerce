@@ -1,20 +1,22 @@
-import { NextRequest } from 'next/server'
-import jwt from 'jsonwebtoken'
-import { AdminUser } from '@/types/types'
-import prisma from './prisma'
+import { NextRequest } from "next/server";
+import jwt from "jsonwebtoken";
+import { AdminUser, JWTPayload } from "@/types/types";
+import prisma from "./prisma";
 
-export async function getAdminUser(request: NextRequest): Promise<AdminUser | null> {
+export async function getAdminUser(
+  request: NextRequest
+): Promise<AdminUser | null> {
   try {
-    const token = request.cookies.get('auth-token')?.value
+    const token = request.cookies.get("auth-token")?.value;
 
     if (!token) {
-      return null
+      return null;
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JWTPayload;
 
-    if (decoded.role !== 'ADMIN') {
-      return null
+    if (decoded.role !== "ADMIN") {
+      return null;
     }
 
     const user = await prisma.user.findUnique({
@@ -23,31 +25,33 @@ export async function getAdminUser(request: NextRequest): Promise<AdminUser | nu
         id: true,
         email: true,
         name: true,
-        role: true
-      }
-    })
+        role: true,
+      },
+    });
 
-    if (!user || user.role !== 'ADMIN') {
-      return null
+    if (!user || user.role !== "ADMIN") {
+      return null;
     }
 
-    return user as AdminUser
+    return user as AdminUser;
   } catch (error) {
-    return null
+    return null;
   }
 }
 
-export function requireAdminApi(handler: (req: NextRequest, admin: AdminUser) => Promise<Response>) {
+export function requireAdminApi(
+  handler: (req: NextRequest, admin: AdminUser) => Promise<Response>
+) {
   return async (request: NextRequest) => {
-    const admin = await getAdminUser(request)
+    const admin = await getAdminUser(request);
 
     if (!admin) {
-      return new Response(
-        JSON.stringify({ error: 'Admin access required' }),
-        { status: 403, headers: { 'Content-Type': 'application/json' } }
-      )
+      return new Response(JSON.stringify({ error: "Admin access required" }), {
+        status: 403,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
-    return handler(request, admin)
-  }
+    return handler(request, admin);
+  };
 }

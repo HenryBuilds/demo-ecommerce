@@ -1,42 +1,49 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react'
-import { useAuth } from '@/hooks/useAuth'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react'
-import Link from 'next/link'
+import React, { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Eye, EyeOff, Mail, Lock, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export default function SignInPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
-  
-  const { login } = useAuth()
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const redirect = searchParams.get('redirect') || '/'
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const { login } = useAuth();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect") || "/";
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
     try {
-      await login(email, password)
-      router.push(redirect)
-    } catch (err: any) {
-      setError(err.message)
+      await login(email, password);
+      router.push(redirect);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Login failed");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center justify-center p-4">
@@ -46,22 +53,26 @@ export default function SignInPage() {
             <Lock className="h-6 w-6 text-primary-foreground" />
           </div>
           <h1 className="text-2xl font-bold text-foreground">Welcome back</h1>
-          <p className="text-sm text-muted-foreground mt-1">Sign in to your account to continue</p>
+          <p className="text-sm text-muted-foreground mt-1">
+            Sign in to your account to continue
+          </p>
         </div>
 
         <Card className="shadow-lg border">
           <CardHeader className="text-center pb-6">
             <CardTitle className="text-xl">Sign In</CardTitle>
-            <CardDescription>Enter your credentials to access your account</CardDescription>
+            <CardDescription>
+              Enter your credentials to access your account
+            </CardDescription>
           </CardHeader>
-          
+
           <CardContent className="space-y-4">
             {error && (
               <Alert variant="destructive">
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
-            
+
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <div className="relative">
@@ -77,7 +88,7 @@ export default function SignInPage() {
                 />
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <div className="relative">
@@ -96,15 +107,19 @@ export default function SignInPage() {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
                 >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
                 </button>
               </div>
             </div>
           </CardContent>
-          
+
           <CardFooter className="flex flex-col space-y-4 pt-6">
-            <Button 
-              className="w-full" 
+            <Button
+              className="w-full"
               disabled={loading}
               onClick={handleSubmit}
             >
@@ -117,9 +132,9 @@ export default function SignInPage() {
                 </>
               )}
             </Button>
-            
+
             <p className="text-center text-sm text-muted-foreground">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{" "}
               <Link
                 href="/register"
                 className="text-primary hover:text-primary/80 font-medium underline underline-offset-4"
@@ -131,5 +146,5 @@ export default function SignInPage() {
         </Card>
       </div>
     </div>
-  )
+  );
 }
