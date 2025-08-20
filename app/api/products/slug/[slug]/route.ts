@@ -3,12 +3,14 @@ import prisma from '@/lib/prisma'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
+    const { slug } = await params
+
     const product = await prisma.product.findUnique({
       where: { 
-        slug: params.slug,
+        slug: slug,
         status: 'PUBLISHED'
       }
     })
@@ -21,7 +23,8 @@ export async function GET(
     }
 
     return NextResponse.json({ product })
-  } catch {
+  } catch (error) {
+    console.error('Error fetching product:', error)
     return NextResponse.json(
       { error: 'Failed to fetch product' },
       { status: 500 }
