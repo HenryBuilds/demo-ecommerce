@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,7 +8,7 @@ import { CheckCircle, Download, ArrowLeft, Package } from "lucide-react";
 import { useCart } from "@/hooks/CartContext";
 import { Order } from "@/types/types";
 
-export default function SuccessPage() {
+function SuccessPageContent() {
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
@@ -19,8 +19,10 @@ export default function SuccessPage() {
   useEffect(() => {
     if (sessionId && state.items.length > 0) {
       createOrder();
+    } else if (!sessionId) {
+      router.push("/");
     }
-  }, [sessionId, state.items]);
+  }, [sessionId, state.items, router]);
 
   const createOrder = async () => {
     try {
@@ -161,5 +163,21 @@ export default function SuccessPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+function SuccessPageLoading() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center justify-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+    </div>
+  );
+}
+
+export default function SuccessPage() {
+  return (
+    <Suspense fallback={<SuccessPageLoading />}>
+      <SuccessPageContent />
+    </Suspense>
   );
 }
