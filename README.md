@@ -1,36 +1,22 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Legal Disclaimer for Template Shop
 
-## Getting Started
+This website is a demo e-commerce template hosted at [https://template-shop1.vercel.app/](https://template-shop1.vercel.app/). Please read the following important notice carefully before using this site or making any transactions through it:
 
-First, run the development server:
+- **No Warranty:** This website and all its components are provided "as is," without any warranties or guarantees of any kind, either express or implied. We do not guarantee the accuracy, completeness, or reliability of any content, products, or services offered through this site.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Limitation of Liability:** Under no circumstances shall we be liable for any direct, indirect, incidental, consequential, special, or punitive damages arising out of or relating to the use, inability to use, or performance of this website or any transactions conducted through it.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Payment Processing:** We do not assume any responsibility or liability for technical errors, delays, or failures related to payment processing, including but not limited to payment gateway errors, transaction failures, or any financial discrepancies.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **User Responsibility:** Users agree to use this website at their own risk. It is the sole responsibility of users to verify any information and ensure that all transactions are legitimate and secure.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **No Professional Advice:** Nothing on this website constitutes legal, financial, or professional advice. Users should consult appropriate professionals before making any decisions based on content or services offered here.
 
-## Learn More
+- **Indemnification:** By using this site, you agree to indemnify and hold harmless the website owner from any claims, losses, liabilities, damages, or expenses arising from your use of the website, including any breaches of this disclaimer.
 
-To learn more about Next.js, take a look at the following resources:
+By interacting with this website in any way, you expressly accept and agree to this disclaimer and release any claims against the website owner related to technical errors, payment issues, or other liabilities.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+If you do not agree to these terms, please do not use or interact with this website.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+*This disclaimer is provided for informational purposes and does not create any contractual or legal relationship.*
