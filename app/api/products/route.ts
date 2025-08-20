@@ -8,6 +8,8 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status')
     const category = searchParams.get('category')
     const limit = searchParams.get('limit')
+    const page = searchParams.get('page')
+    const offset = searchParams.get('offset')
 
     const where: any = {}
     
@@ -21,14 +23,54 @@ export async function GET(request: NextRequest) {
       where.category = category
     }
 
+    const itemsPerPage = limit ? parseInt(limit) : 10
+    const currentPage = page ? parseInt(page) : 1
+    const skip = offset ? parseInt(offset) : (currentPage - 1) * itemsPerPage
+
+    if (itemsPerPage < 1 || itemsPerPage > 100) {
+      return NextResponse.json(
+        { error: 'Limit must be between 1 and 100' },
+        { status: 400 }
+      )
+    }
+
+    if (currentPage < 1) {
+      return NextResponse.json(
+        { error: 'Page must be greater than 0' },
+        { status: 400 }
+      )
+    }
+
+    const totalCount = await prisma.product.count({ where })
+
     const products = await prisma.product.findMany({
       where,
       orderBy: { createdAt: 'desc' },
-      take: limit ? parseInt(limit) : undefined
+      take: itemsPerPage,
+      skip
     })
 
-    return NextResponse.json({ products })
-  } catch {
+    const totalPages = Math.ceil(totalCount / itemsPerPage)
+    const hasNextPage = currentPage < totalPages
+    const hasPrevPage = currentPage > 1
+
+    const pagination = {
+      currentPage,
+      totalPages,
+      itemsPerPage,
+      totalCount,
+      hasNextPage,
+      hasPrevPage,
+      nextPage: hasNextPage ? currentPage + 1 : null,
+      prevPage: hasPrevPage ? currentPage - 1 : null
+    }
+
+    return NextResponse.json({ 
+      products, 
+      pagination 
+    })
+  } catch (error) {
+    console.error('Error fetching products:', error)
     return NextResponse.json(
       { error: 'Failed to fetch products' },
       { status: 500 }
@@ -93,7 +135,8 @@ export async function POST(request: NextRequest) {
     })
 
     return NextResponse.json({ product }, { status: 201 })
-  } catch {
+  } catch (error) {
+    console.error('Error creating product:', error)
     return NextResponse.json(
       { error: 'Failed to create product' },
       { status: 500 }
