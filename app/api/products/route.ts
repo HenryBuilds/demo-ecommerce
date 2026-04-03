@@ -65,10 +65,12 @@ export async function GET(request: NextRequest) {
       prevPage: hasPrevPage ? currentPage - 1 : null
     }
 
-    return NextResponse.json({ 
-      products, 
-      pagination 
+    const response = NextResponse.json({
+      products,
+      pagination
     })
+    response.headers.set('Cache-Control', 's-maxage=60, stale-while-revalidate=300')
+    return response
   } catch (error) {
     console.error('Error fetching products:', error)
     return NextResponse.json(
